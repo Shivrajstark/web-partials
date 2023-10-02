@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<style>
+    :root {
+
+        /* ui colors */
+        --ui-dark: hsl(219, 80%, 55%);
+        --odd-row: hsl(219, 90%, 75%);
+        --even-row: hsl(219, 100%, 85%);
+
+        /* ui fonts */
+        --ui-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        --uni-fsize: 1.5vw;
+        --th-fsize: 1.2vw;
+        --td-fsize: 1.2vw;
+        --foot-fsize: 1.2vw;
+        --head-fsize: 1.2vw;
+        --tmax-width: 100%;
+    }
+
+    /* outer div of all pagination tables */
+    .maindiv {
+        font-family: var(--ui-family);
+        border-radius: 5px;
+        /* css gradient */
+        background: -moz-linear-gradient(-45deg, #eff2f7 0%, #D1E1F8 100%);
+        background: -webkit-linear-gradient(-45deg, #eff2f7 0%, #D1E1F8 100%);
+        background: linear-gradient(135deg, #eff2f7 0%, #D1E1F8 100%);
+        -webkit-box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.8);
+        box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.8);
+
+
+        width: var(--tmax-width);
+        display: inline-block;
+        padding: 0.5vw;
+
+
+        /* to block copy text form table */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        box-sizing: border-box;
+    }
+
+    #disp:focus {
+        outline: none;
+    }
+
+    /* main table class */
+    .p-table {
+
+        border-spacing: 0vh 0.5vh;
+
+        border-radius: 7px;
+        font-size: var(--uni-fsize);
+        width: var(--tmax-width);
+
+    }
+
+    /* table head and row adjusters */
+    .pt-h tr th,
+    .table-data tr td {
+        /* background-color: red; */
+        margin: 0;
+        padding: .5vw;
+        text-align: center;
+    }
+
+    /* table head  */
+    .pt-h {
+
+        background-color: var(--ui-dark);
+        color: white;
+    }
+
+    .pt-h tr:first-child th:first-child {
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .pt-h tr:first-child th:last-child {
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+
+    /* table data  */
+    .table-data {
+        font-size: 1.4vw;
+    }
+
+
+    .table-data tr:nth-child(even) {
+        background-color: var(--odd-row);
+    }
+
+    .table-data tr:nth-child(odd) {
+        background-color: var(--even-row);
+    }
+
+
+
+
+
+
+
+    /* -------------- (page box ) */
+    .sel-box {
+        display: flex;
+        justify-content: right;
+
+        padding: 0.5vw;
+    }
+
+
+    .page-list {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+    }
+
+    .page-list li,
+    .arr-box {
+
+        background-color: var(--ui-dark);
+        color: white;
+        font-size: var(--foot-fsize);
+        margin: 0vw .5vw;
+        padding: .5vw .7vw;
+        border-radius: 5px;
+        border: 2px solid rgba(255, 255, 255, 0);
+
+    }
+
+    .arr-box:active {
+        background-color: white;
+        color: var(--ui-dark);
+        font-weight: bold;
+        border: 2px solid var(--ui-dark);
+    }
+
+    .page-list li:hover {
+
+        border: 2px solid rgb(255, 255, 255);
+    }
+
+    #active {
+        background-color: white;
+        color: var(--ui-dark);
+        font-weight: bold;
+        border: 2px solid var(--ui-dark);
+        /* color: black; */
+    }
+
+    /* .arrR {
+        margin-left: auto;
+    } */
+</style>
+
+<body>
+
+    <section class="maindiv">
+        <span id="indextext">get on shivrajstark github</span>
+        <form name="display" style="display: inline-block;">
+            <label for="disp">Select rows :</label>
+            <select name="sel_rows" id="disp" onchange="refresh(0,1)">
+                <option value="5">5 Rows</option>
+                <option value="10">10 Rows</option>
+            </select>
+
+        </form>
+
+        <table class="p-table">
+
+            <thead class="pt-h">
+
+                <!-- only generate raw (tr th) -->
+                <tr>
+
+                    <th>StudentID</th>
+                    <th>StudentName</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Marks Scored</th>
+                </tr>
+            </thead>
+
+            <tbody class="pt-b table-data">
+
+
+                <!-- only generate raw (tr td) all table data -->
+                <tr>
+                    <td>ST1</td>
+                    <td>Prema</td>
+                    <td>35</td>
+                    <td>Female</td>
+                    <td>320</td>
+                </tr>
+                <tr>
+                    <td>ST2</td>
+                    <td>Wincy</td>
+                    <td>36</td>
+                    <td>Female</td>
+                    <td>170</td>
+                </tr>
+                <tr>
+                    <td>ST3</td>
+                    <td>Ashmita</td>
+                    <td>41</td>
+                    <td>Female</td>
+                    <td>860</td>
+                </tr>
+                <tr>
+                    <td>ST4</td>
+                    <td>Kelina</td>
+                    <td>32</td>
+                    <td>Female</td>
+                    <td>433</td>
+                </tr>
+                <tr>
+                    <td>ST5</td>
+                    <td>Satvik</td>
+                    <td>41</td>
+                    <td>male</td>
+                    <td>162</td>
+                </tr>
+                <tr>
+                    <td>ST6</td>
+                    <td>William</td>
+                    <td>37</td>
+                    <td>Female</td>
+                    <td>372</td>
+                </tr>
+                <tr>
+                    <td>ST7</td>
+                    <td>Chandan</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>375</td>
+                </tr>
+                <tr>
+                    <td>ST8</td>
+                    <td>David</td>
+                    <td>45</td>
+                    <td>male</td>
+                    <td>327</td>
+                </tr>
+                <tr>
+                    <td>ST9</td>
+                    <td>Harry</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>205</td>
+                </tr>
+                <tr>
+                    <td>ST10</td>
+                    <td>Frost</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>ST11</td>
+                    <td>Ginny</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>560</td>
+                </tr>
+                <tr>
+                    <td>ST12</td>
+                    <td>Flod</td>
+                    <td>45</td>
+                    <td>Female</td>
+                    <td>342</td>
+                </tr>
+                <tr>
+                    <td>ST13</td>
+                    <td>Kennedy</td>
+                    <td>43</td>
+                    <td>male</td>
+                    <td>313</td>
+                </tr>
+                <tr>
+                    <td>ST14</td>
+                    <td>Fiza</td>
+                    <td>31</td>
+                    <td>Female</td>
+                    <td>750</td>
+                </tr>
+                <tr>
+                    <td>ST15</td>
+                    <td>Silva</td>
+                    <td>34</td>
+                    <td>male</td>
+                    <td>985</td>
+                </tr>
+                <tr>
+                    <td>ST1</td>
+                    <td>Prema</td>
+                    <td>35</td>
+                    <td>Female</td>
+                    <td>320</td>
+                </tr>
+                <tr>
+                    <td>ST2</td>
+                    <td>Wincy</td>
+                    <td>36</td>
+                    <td>Female</td>
+                    <td>170</td>
+                </tr>
+                <tr>
+                    <td>ST3</td>
+                    <td>Ashmita</td>
+                    <td>41</td>
+                    <td>Female</td>
+                    <td>860</td>
+                </tr>
+                <tr>
+                    <td>ST4</td>
+                    <td>Kelina</td>
+                    <td>32</td>
+                    <td>Female</td>
+                    <td>433</td>
+                </tr>
+                <tr>
+                    <td>ST5</td>
+                    <td>Satvik</td>
+                    <td>41</td>
+                    <td>male</td>
+                    <td>162</td>
+                </tr>
+                <tr>
+                    <td>ST6</td>
+                    <td>William</td>
+                    <td>37</td>
+                    <td>Female</td>
+                    <td>372</td>
+                </tr>
+                <tr>
+                    <td>ST7</td>
+                    <td>Chandan</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>375</td>
+                </tr>
+                <tr>
+                    <td>ST8</td>
+                    <td>David</td>
+                    <td>45</td>
+                    <td>male</td>
+                    <td>327</td>
+                </tr>
+                <tr>
+                    <td>ST9</td>
+                    <td>Harry</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>205</td>
+                </tr>
+                <tr>
+                    <td>ST10</td>
+                    <td>Frost</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>ST11</td>
+                    <td>Ginny</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>560</td>
+                </tr>
+                <tr>
+                    <td>ST12</td>
+                    <td>Flod</td>
+                    <td>45</td>
+                    <td>Female</td>
+                    <td>342</td>
+                </tr>
+                <tr>
+                    <td>ST13</td>
+                    <td>Kennedy</td>
+                    <td>43</td>
+                    <td>male</td>
+                    <td>313</td>
+                </tr>
+                <tr>
+                    <td>ST14</td>
+                    <td>Fiza</td>
+                    <td>31</td>
+                    <td>Female</td>
+                    <td>750</td>
+                </tr>
+                <tr>
+                    <td>ST15</td>
+                    <td>Silva</td>
+                    <td>34</td>
+                    <td>male</td>
+                    <td>985</td>
+                </tr>
+                <tr>
+                    <td>ST1</td>
+                    <td>Prema</td>
+                    <td>35</td>
+                    <td>Female</td>
+                    <td>320</td>
+                </tr>
+                <tr>
+                    <td>ST2</td>
+                    <td>Wincy</td>
+                    <td>36</td>
+                    <td>Female</td>
+                    <td>170</td>
+                </tr>
+                <tr>
+                    <td>ST3</td>
+                    <td>Ashmita</td>
+                    <td>41</td>
+                    <td>Female</td>
+                    <td>860</td>
+                </tr>
+                <tr>
+                    <td>ST4</td>
+                    <td>Kelina</td>
+                    <td>32</td>
+                    <td>Female</td>
+                    <td>433</td>
+                </tr>
+                <tr>
+                    <td>ST5</td>
+                    <td>Satvik</td>
+                    <td>41</td>
+                    <td>male</td>
+                    <td>162</td>
+                </tr>
+                <tr>
+                    <td>ST6</td>
+                    <td>William</td>
+                    <td>37</td>
+                    <td>Female</td>
+                    <td>372</td>
+                </tr>
+                <tr>
+                    <td>ST7</td>
+                    <td>Chandan</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>375</td>
+                </tr>
+                <tr>
+                    <td>ST8</td>
+                    <td>David</td>
+                    <td>45</td>
+                    <td>male</td>
+                    <td>327</td>
+                </tr>
+                <tr>
+                    <td>ST9</td>
+                    <td>Harry</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>205</td>
+                </tr>
+                <tr>
+                    <td>ST10</td>
+                    <td>Frost</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>ST11</td>
+                    <td>Ginny</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>560</td>
+                </tr>
+                <tr>
+                    <td>ST12</td>
+                    <td>Flod</td>
+                    <td>45</td>
+                    <td>Female</td>
+                    <td>342</td>
+                </tr>
+                <tr>
+                    <td>ST13</td>
+                    <td>Kennedy</td>
+                    <td>43</td>
+                    <td>male</td>
+                    <td>313</td>
+                </tr>
+                <tr>
+                    <td>ST14</td>
+                    <td>Fiza</td>
+                    <td>31</td>
+                    <td>Female</td>
+                    <td>750</td>
+                </tr>
+                <tr>
+                    <td>ST15</td>
+                    <td>Silva</td>
+                    <td>34</td>
+                    <td>male</td>
+                    <td>985</td>
+                </tr>
+                <tr>
+                    <td>ST1</td>
+                    <td>Prema</td>
+                    <td>35</td>
+                    <td>Female</td>
+                    <td>320</td>
+                </tr>
+                <tr>
+                    <td>ST2</td>
+                    <td>Wincy</td>
+                    <td>36</td>
+                    <td>Female</td>
+                    <td>170</td>
+                </tr>
+                <tr>
+                    <td>ST3</td>
+                    <td>Ashmita</td>
+                    <td>41</td>
+                    <td>Female</td>
+                    <td>860</td>
+                </tr>
+                <tr>
+                    <td>ST4</td>
+                    <td>Kelina</td>
+                    <td>32</td>
+                    <td>Female</td>
+                    <td>433</td>
+                </tr>
+                <tr>
+                    <td>ST5</td>
+                    <td>Satvik</td>
+                    <td>41</td>
+                    <td>male</td>
+                    <td>162</td>
+                </tr>
+                <tr>
+                    <td>ST6</td>
+                    <td>William</td>
+                    <td>37</td>
+                    <td>Female</td>
+                    <td>372</td>
+                </tr>
+                <tr>
+                    <td>ST7</td>
+                    <td>Chandan</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>375</td>
+                </tr>
+                <tr>
+                    <td>ST8</td>
+                    <td>David</td>
+                    <td>45</td>
+                    <td>male</td>
+                    <td>327</td>
+                </tr>
+                <tr>
+                    <td>ST9</td>
+                    <td>Harry</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>205</td>
+                </tr>
+                <tr>
+                    <td>ST10</td>
+                    <td>Frost</td>
+                    <td>29</td>
+                    <td>male</td>
+                    <td>300</td>
+                </tr>
+                <tr>
+                    <td>ST11</td>
+                    <td>Ginny</td>
+                    <td>31</td>
+                    <td>male</td>
+                    <td>560</td>
+                </tr>
+                <tr>
+                    <td>ST12</td>
+                    <td>Flod</td>
+                    <td>45</td>
+                    <td>Female</td>
+                    <td>342</td>
+                </tr>
+                <tr>
+                    <td>ST13</td>
+                    <td>Kennedy</td>
+                    <td>43</td>
+                    <td>male</td>
+                    <td>313</td>
+                </tr>
+                <tr>
+                    <td>ST14</td>
+                    <td>Fiza</td>
+                    <td>31</td>
+                    <td>Female</td>
+                    <td>750</td>
+                </tr>
+                <tr>
+                    <td>ST15</td>
+                    <td>Silva</td>
+                    <td>34</td>
+                    <td>male</td>
+                    <td>985</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- pagenation table -->
+        <div class="sel-box">
+            <div onclick="refresh(-1)" class="arrL arr-box">&#8592;</div>
+            <div class="pages">
+                <ol class="page-list">
+
+
+                </ol>
+            </div>
+            <div onclick="refresh(1)" class="arrR arr-box">&#8594;</>
+            </div>
+
+    </section>
+
+
+
+    <script>
+
+        const td_rows = document.querySelectorAll(".table-data tr")
+
+
+        // settings variables (global used)
+        let c_page = 1
+        let c_dock = 1
+        let totalpages = 0
+        let totaldocks = 0
+        const td_n = td_rows.length
+
+
+
+
+        //  round the border of all rows
+        const style_drows = function () {
+            const row_radius = 5
+            // styles ------ 
+            for (let i = 0; i < td_n; i++) {
+                td_rows[i].firstElementChild.style.borderTopLeftRadius = row_radius + "px";
+                td_rows[i].firstElementChild.style.borderBottomLeftRadius = row_radius + "px";
+                td_rows[i].lastElementChild.style.borderTopRightRadius = row_radius + "px";
+                td_rows[i].lastElementChild.style.borderBottomRightRadius = row_radius + "px";
+
+            }
+        }
+        style_drows()
+
+        // to hide all data rows (row hiding)
+        const hide_drows = function () {
+            for (let i = 0; i < td_n; i++) {
+                td_rows[i].style.display = "none"
+
+            }
+        }
+
+        // to get the table row length from user
+        const get_hight = function (def = document.forms["display"]["sel_rows"].value) {
+            return parseInt(def)
+
+        }
+
+
+        // function that find the pages for table based on hight
+        const find_numof_pages = function (row_len, table_len) {
+            return (Math.ceil(row_len / table_len) * table_len) / table_len
+        }
+
+
+    // pagenation box generator (it hide all also)
+        const box_generator = function () {
+
+            const page_list = document.getElementsByClassName("page-list")
+            page_list[0].innerHTML = ""
+
+
+            for (let i = 1; i <= totalpages; i++) {
+                const newele = document.createElement("li")
+                newele.innerHTML = i;
+                newele.setAttribute("onclick", `refresh(0,${i})`)
+                newele.style.display = "none"
+                page_list[0].appendChild(newele)
+
+
+
+            }
+
+
+
+        }
+
+        // it adjust pageinaton box (show specfic)
+        const box_adjuster = function (curr_page, dockwidth) {
+
+            const page_list = document.getElementsByClassName("page-list")
+            const dockitems = page_list[0].children
+
+            let loopval = curr_page
+            console.log(loopval)
+            
+            let sides = Math.floor(dockwidth / 2)
+            // console.log("ex", sides)
+
+            if ((loopval - sides) < 1) {
+
+                loopval = Math.ceil(dockwidth / 2)
+            }
+
+
+            for (let n = loopval - sides; n <= (loopval + sides); n++) {
+
+                // console.log(n)
+
+                if (n <= totaldocks && n > 0) {
+
+                    dockitems[n - 1].style.display = "list-item"
+                }
+
+
+            }
+
+            dockitems[curr_page - 1].setAttribute("id", "active")
+
+        }
+
+
+        // main function to apply all things
+        const refresh = function (adjust = 0, page = -1) {
+
+            // it gains the current page and dock   
+            let gain = 0
+            let dockgain = 0
+            hide_drows()
+            const t_height = get_hight()
+            totalpages = find_numof_pages(td_n, t_height)
+            totaldocks = totalpages
+
+
+            // for previous page
+            if (page != -1) {
+                c_page = page
+
+                gain = (c_page * t_height) - t_height
+
+            }
+
+            // for other pages
+            if (adjust != 0) {
+
+                c_page += adjust
+                if (c_page > totalpages) {
+
+                    c_page = 1
+
+                }
+                if (c_page <= 0) {
+                    c_page = totalpages
+                }
+                gain = (c_page * t_height) - t_height
+                console.log(c_page)
+
+            }
+
+            // main loop that unhide the table
+
+            for (let i = 0; i < t_height; i++) {
+
+                if ((i + gain) < td_n) {
+
+                    td_rows[i + gain].style.display = "table-row"
+                }
+            }
+
+
+
+            box_generator()
+            box_adjuster(c_page, t_height)
+
+
+            document.querySelector("#indextext").innerHTML = `${c_page}/${totalpages}`
+
+
+        }
+        refresh()
+
+
+
+
+
+        // if any error auccor in js all table data will show
+
+
+    </script>
+
+</body>
+
+</html>
